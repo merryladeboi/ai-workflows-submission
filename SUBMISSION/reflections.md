@@ -98,4 +98,6 @@ single-purpose tool.
    "Plain-language summary: the signup form now shows an error message if the email field is empty,
    instead of failing silently." This costs almost nothing to add (the AI already knows what it did),
    but it changes who can actually use this workflow to delegate work with confidence — which matters
-   if AI-native tooling is meant to extend past the engineering team.
+   if AI-native tooling is meant to extend past the engineering team. The applied version of this
+   change is in `workflows/SUBMISSION/implement.md`, marked with `<!-- EDITED -->` comments on each
+   added line so the original and my additions are easy to tell apart without a manual diff.
