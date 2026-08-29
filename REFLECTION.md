@@ -1,0 +1,78 @@
+# Reflection: AI-Workflows Repository
+
+## How I approached this
+
+I cloned the repo and read through the workflow files with Claude (Anthropic's AI) as a thinking
+partner — I fed it the workflow markdown files, asked it to explain what system was actually being
+described, then used it to stress-test my own read of the repo (e.g. checking whether every file
+actually conformed to the standard the repo itself defines in `work-with-workflow.md`). That
+back-and-forth is also how I found the frontmatter inconsistency noted below — I asked Claude to
+verify my assumption about which fields discovery reads, rather than taking it at face value.
+
+## What this repository is
+
+It's not a single workflow — it's an **operating system for how AI agents get delegated work**.
+`work-with-workflow.md` is the meta-spec: every task type (bug fix, PR, planning, investigation...)
+is captured as a markdown file with exactly five sections (Trigger → Goal → Context → Constraints →
+Verify), and an agent auto-discovers the right one by matching a request against each file's
+`trigger` frontmatter. The philosophy underneath it: script anything that can be enumerated as a
+rule, and only fall back to an LLM step when judgment is genuinely required — and every such step
+must justify itself inline (`LLM needed because...`). It's governance for AI-driven work, not a
+single-purpose tool.
+
+## Use cases for my professional life (Product Manager, no coding background)
+
+- **`planning.md`** — turns a vague ask ("plan the Q3 rollout") into a dependency-mapped task list
+  (Parallel / Blocked by / Blocks per task). I'd use this directly for feature launch planning and
+  roadmap breakdowns — it's language-agnostic to my not being an engineer.
+- **`investigate.md`** — read-only recon with a strict output contract (exact file/line references,
+  no paraphrasing, written for someone who's never seen the material). This maps almost exactly to
+  how I'd want AI to summarize a stack of user interviews, support tickets, or a competitor's docs
+  before I write a PRD.
+- **`implement.md` / `bug-fix.md`** — this is the part that's genuinely new to me as a non-engineer:
+  the guardrails (ambiguity gate that refuses to touch code if the ask isn't clear; test-red-before-fix
+  discipline; a report that lists every file touched) are what make it *safe* for someone like me to
+  delegate real code changes to AI and trust the result, instead of needing to read the diff myself.
+- **`gmail-workflow.md` / `gsheet-workflow.md`** — the most immediately usable, zero setup needed
+  beyond OAuth: inbox triage with a dedupe-before-classify step, draft-only replies (never sends),
+  and a Sheets CLI I could use for a lightweight spec/feature tracker without opening a spreadsheet
+  UI at all.
+- **`specs-optimization.md`** — conceptually the most relevant one to SUN Mobility's transformation
+  specifically: it runs AI "probes" against a documentation corpus to measure where AI agents get
+  lost navigating it, then recommends re-categorization. That's the exact question a company going
+  AI-native should be asking about its own product specs and internal docs.
+
+## Use cases for personal life
+
+- `gmail-workflow.md` for inbox triage/cleanup with the same drafting-not-sending safety net.
+- `gsheet-workflow.md` for a personal budget or trip-planning tracker, driven by chat instead of
+  manual spreadsheet editing.
+- `planning.md` for something like an apartment move or a personal project, where I want a task
+  breakdown with dependencies made explicit before I start.
+
+## What I'd change
+
+1. **Frontmatter inconsistency that breaks discovery.** `work-with-workflow.md` states plainly that
+   discovery only reads the `trigger` key now — *"`description` is no longer read"*. But
+   `gsheet-workflow.md` and `gmail-workflow.md` both still use `description:` in their frontmatter,
+   with no `trigger:` field at all. As written, these two workflows are invisible to the discovery
+   mechanism the rest of the repo relies on. This is a small fix (rename the field, keep it under
+   170 chars) but it's a real contradiction between the repo's own stated rule and its own files.
+
+2. **No entry-point document.** There's no top-level README that explains the mental model (five-field
+   format, discovery mechanism, harness abstraction) before a newcomer is expected to read nine
+   files cold and infer the system from `work-with-workflow.md` alone. I'd add a short root README
+   that states the one-paragraph "what is this and how do I add to it" before pointing to that file.
+
+3. **Verification assumes terminal fluency.** Every `Verify` section is raw bash/CLI commands. That's
+   appropriate for the engineering workflows, but if this system is meant to extend to non-engineers
+   (which the personal/professional use cases above suggest it should), I'd want a plain-language
+   summary layer on top — an agent reporting "3/3 checks passed" in prose — so someone without shell
+   experience can still trust that Verify actually ran and passed, not just take it on faith.
+
+## What I built to demonstrate this
+
+Alongside this reflection, I added a new workflow — `workflows/prd-review/prd-review.md` — built to
+the repository's own five-field standard, for a use case directly out of my day-to-day as a PM:
+having AI review a draft PRD against a consistent bar before it goes to engineering, so gaps get
+caught before a kickoff meeting rather than during one.
