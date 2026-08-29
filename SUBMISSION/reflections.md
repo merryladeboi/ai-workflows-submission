@@ -86,9 +86,16 @@ single-purpose tool.
    design, rather than trying to force it into the read-once/report-once shape the current workflows
    share.
 
-## What I built to demonstrate this
-
-Alongside this reflection, I added a new workflow — `workflows/prd-review/prd-review.md` — built to
-the repository's own five-field standard, for a use case directly out of my day-to-day as a PM:
-having AI review a draft PRD against a consistent bar before it goes to engineering, so gaps get
-caught before a kickoff meeting rather than during one.
+5. **`implement.md`'s output is written for a reviewer who can already read a diff.** The report format
+   it produces — "Files Changed" as a bare list of paths, "Notes" for anything else — assumes the
+   person reading it is technical enough to open those files and understand what changed just from the
+   path and a one-line description. That's a reasonable default for handoff-to-review, but it doesn't
+   work if the person delegating the task is a non-engineer (a PM, for instance) who needs to trust
+   that the right thing happened without opening the code themselves. I'd add one requirement to the
+   Goal/Constraints of `implement.md`: every completion report opens with a plain-language summary —
+   one or two sentences describing what changed and why, in terms someone without engineering context
+   can verify against their original ask — before the technical "Files Changed" list. Something like:
+   "Plain-language summary: the signup form now shows an error message if the email field is empty,
+   instead of failing silently." This costs almost nothing to add (the AI already knows what it did),
+   but it changes who can actually use this workflow to delegate work with confidence — which matters
+   if AI-native tooling is meant to extend past the engineering team.
