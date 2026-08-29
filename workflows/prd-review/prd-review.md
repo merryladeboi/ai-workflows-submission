@@ -1,5 +1,5 @@
 ---
-trigger: "Review this PRD", "is this spec ready for eng", "check my product doc before I send it", "gaps in this feature spec" — reviewing a draft PRD/spec before handoff. NOT writing the PRD itself (write), NOT implementation (implement).
+trigger: 'Review this PRD, is this spec ready for eng, check my product doc before I send it, gaps in this feature spec — reviewing a draft PRD/spec before handoff. NOT writing the PRD itself (write), NOT implementation (implement).'
 ---
 
 ## Trigger
